@@ -12,7 +12,7 @@ class_name FallenTemplar
 @onready var holy_projectile_spawn: Marker2D = $HolyProjectileSpawn
 
 # Preloads
-var holy_projectile_scene: PackedScene = preload("res://scenes/bosses/projectiles/holy_projectile.tscn") if ResourceLoader.exists("res://scenes/bosses/projectiles/holy_projectile.tscn") else null
+var holy_projectile_scene: PackedScene = null
 
 # Phase-specific variables
 var enrage_mode: bool = false
@@ -26,6 +26,10 @@ func _ready() -> void:
 	phase_thresholds = [0.6, 0.3]  # Phase 2 at 60%, Phase 3 at 30%
 	soul_essence_reward = 1
 	blood_coin_reward = 150
+	
+	# Load projectile scene if exists
+	if ResourceLoader.exists("res://scenes/bosses/projectiles/holy_projectile.tscn"):
+		holy_projectile_scene = load("res://scenes/bosses/projectiles/holy_projectile.tscn")
 	
 	super._ready()
 	_setup_hitboxes()
