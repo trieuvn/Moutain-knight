@@ -1,0 +1,126 @@
+[gd_scene load_steps=3 format=3 uid="uid://hud_main_scene"]
+
+[ext_resource type="Script" path="res://scripts/ui/hud.gd" id="1_hud"]
+
+[node name="HUD" type="CanvasLayer"]
+layer = 10
+script = ExtResource("1_hud")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="HealthContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="HealthIcon" type="Label" parent="MarginContainer/VBoxContainer/HealthContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.1, 0.1, 1)
+theme_override_font_sizes/font_size = 24
+text = "♥"
+
+[node name="HealthBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/HealthContainer"]
+custom_minimum_size = Vector2(200, 24)
+layout_mode = 2
+theme_override_styles/background = null
+theme_override_styles/fill = null
+max_value = 100.0
+value = 100.0
+show_percentage = false
+
+[node name="HealthLabel" type="Label" parent="MarginContainer/VBoxContainer/HealthContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
+theme_override_font_sizes/font_size = 16
+text = "100/100"
+
+[node name="StaminaContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="StaminaIcon" type="Label" parent="MarginContainer/VBoxContainer/StaminaContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.75, 0.2, 1)
+theme_override_font_sizes/font_size = 24
+text = "⚡"
+
+[node name="StaminaBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/StaminaContainer"]
+custom_minimum_size = Vector2(180, 20)
+layout_mode = 2
+max_value = 100.0
+value = 100.0
+show_percentage = false
+
+[node name="Spacer" type="Control" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="CurrencyContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="BloodCoins" type="HBoxContainer" parent="MarginContainer/VBoxContainer/CurrencyContainer"]
+layout_mode = 2
+
+[node name="Icon" type="Label" parent="MarginContainer/VBoxContainer/CurrencyContainer/BloodCoins"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.1, 0.1, 1)
+theme_override_font_sizes/font_size = 20
+text = "🩸"
+
+[node name="Amount" type="Label" parent="MarginContainer/VBoxContainer/CurrencyContainer/BloodCoins"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_font_sizes/font_size = 18
+text = "0"
+
+[node name="SoulEssence" type="HBoxContainer" parent="MarginContainer/VBoxContainer/CurrencyContainer"]
+layout_mode = 2
+
+[node name="Icon" type="Label" parent="MarginContainer/VBoxContainer/CurrencyContainer/SoulEssence"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.3, 0.8, 1)
+theme_override_font_sizes/font_size = 20
+text = "✦"
+
+[node name="Amount" type="Label" parent="MarginContainer/VBoxContainer/CurrencyContainer/SoulEssence"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_font_sizes/font_size = 18
+text = "0"
+
+[node name="BossHealthContainer" type="VBoxContainer" parent="."]
+visible = false
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -300.0
+offset_top = 50.0
+offset_right = 300.0
+offset_bottom = 100.0
+grow_horizontal = 2
+
+[node name="BossName" type="Label" parent="BossHealthContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.1, 0.1, 1)
+theme_override_font_sizes/font_size = 28
+text = "THE FALLEN TEMPLAR"
+horizontal_alignment = 1
+
+[node name="BossHealthBar" type="ProgressBar" parent="BossHealthContainer"]
+custom_minimum_size = Vector2(600, 30)
+layout_mode = 2
+max_value = 100.0
+value = 100.0
+show_percentage = false

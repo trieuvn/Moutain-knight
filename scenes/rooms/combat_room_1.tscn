@@ -1,0 +1,108 @@
+[gd_scene load_steps=5 format=3 uid="uid://combat_room_1"]
+
+[ext_resource type="PackedScene" uid="uid://skeleton_warrior_enemy" path="res://scenes/enemies/skeleton_warrior.tscn" id="1_enemy"]
+[ext_resource type="PackedScene" uid="uid://hud_main_scene" path="res://scenes/ui/hud.tscn" id="2_hud"]
+
+[sub_resource type="RectangleShape2D" id="ground_shape"]
+size = Vector2(1200, 64)
+
+[sub_resource type="RectangleShape2D" id="wall_shape"]
+size = Vector2(64, 400)
+
+[sub_resource type="RectangleShape2D" id="platform_shape"]
+size = Vector2(200, 24)
+
+[node name="CombatRoom1" type="Node2D"]
+
+[node name="Background" type="ColorRect" parent="."]
+offset_left = -600.0
+offset_top = -300.0
+offset_right = 600.0
+offset_bottom = 300.0
+color = Color(0.05, 0.03, 0.07, 1)
+
+[node name="Ground" type="StaticBody2D" parent="."]
+position = Vector2(0, 250)
+collision_layer = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+shape = SubResource("ground_shape")
+
+[node name="Visual" type="ColorRect" parent="Ground"]
+offset_left = -600.0
+offset_top = -32.0
+offset_right = 600.0
+offset_bottom = 32.0
+color = Color(0.12, 0.08, 0.1, 1)
+
+[node name="LeftWall" type="StaticBody2D" parent="."]
+position = Vector2(-550, 50)
+collision_layer = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
+shape = SubResource("wall_shape")
+
+[node name="Visual" type="ColorRect" parent="LeftWall"]
+offset_left = -32.0
+offset_top = -200.0
+offset_right = 32.0
+offset_bottom = 200.0
+color = Color(0.1, 0.08, 0.09, 1)
+
+[node name="RightWall" type="StaticBody2D" parent="."]
+position = Vector2(550, 50)
+collision_layer = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
+shape = SubResource("wall_shape")
+
+[node name="Visual" type="ColorRect" parent="RightWall"]
+offset_left = -32.0
+offset_top = -200.0
+offset_right = 32.0
+offset_bottom = 200.0
+color = Color(0.1, 0.08, 0.09, 1)
+
+[node name="Platform1" type="StaticBody2D" parent="."]
+position = Vector2(-200, 100)
+collision_layer = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform1"]
+shape = SubResource("platform_shape")
+
+[node name="Visual" type="ColorRect" parent="Platform1"]
+offset_left = -100.0
+offset_top = -12.0
+offset_right = 100.0
+offset_bottom = 12.0
+color = Color(0.15, 0.1, 0.12, 1)
+
+[node name="Platform2" type="StaticBody2D" parent="."]
+position = Vector2(200, 50)
+collision_layer = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform2"]
+shape = SubResource("platform_shape")
+
+[node name="Visual" type="ColorRect" parent="Platform2"]
+offset_left = -100.0
+offset_top = -12.0
+offset_right = 100.0
+offset_bottom = 12.0
+color = Color(0.15, 0.1, 0.12, 1)
+
+[node name="PlayerSpawnPoint" type="Marker2D" parent="."]
+position = Vector2(-400, 200)
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="SkeletonWarrior1" parent="Enemies" instance=ExtResource("1_enemy")]
+position = Vector2(100, 200)
+
+[node name="SkeletonWarrior2" parent="Enemies" instance=ExtResource("1_enemy")]
+position = Vector2(300, 200)
+
+[node name="HUD" parent="." instance=ExtResource("2_hud")]
+
+[node name="AmbientLight" type="CanvasModulate" parent="."]
+color = Color(0.75, 0.65, 0.85, 1)

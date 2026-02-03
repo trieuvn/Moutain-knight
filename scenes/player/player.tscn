@@ -1,0 +1,176 @@
+[gd_scene load_steps=15 format=3 uid="uid://dxp3f5t8player"]
+
+[ext_resource type="Script" path="res://scripts/player/player.gd" id="1_player"]
+[ext_resource type="Script" path="res://scripts/components/state_machine.gd" id="2_sm"]
+[ext_resource type="Script" path="res://scripts/components/health_component.gd" id="3_health"]
+[ext_resource type="Script" path="res://scripts/components/stamina_component.gd" id="4_stamina"]
+[ext_resource type="Script" path="res://scripts/components/hurtbox.gd" id="5_hurtbox"]
+[ext_resource type="Script" path="res://scripts/components/hitbox.gd" id="6_hitbox"]
+[ext_resource type="Script" path="res://scripts/player/states/idle_state.gd" id="7_idle"]
+[ext_resource type="Script" path="res://scripts/player/states/move_state.gd" id="8_move"]
+[ext_resource type="Script" path="res://scripts/player/states/jump_state.gd" id="9_jump"]
+[ext_resource type="Script" path="res://scripts/player/states/fall_state.gd" id="10_fall"]
+[ext_resource type="Script" path="res://scripts/player/states/dodge_state.gd" id="11_dodge"]
+[ext_resource type="Script" path="res://scripts/player/states/light_attack_state.gd" id="12_light"]
+[ext_resource type="Script" path="res://scripts/player/states/heavy_attack_state.gd" id="13_heavy"]
+[ext_resource type="Script" path="res://scripts/player/states/hurt_state.gd" id="14_hurt"]
+[ext_resource type="Script" path="res://scripts/player/states/death_state.gd" id="15_death"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(24, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hurtbox"]
+size = Vector2(20, 44)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hitbox"]
+size = Vector2(40, 30)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_player"]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"idle",
+"speed": 8.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"run",
+"speed": 10.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"jump",
+"speed": 8.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"fall",
+"speed": 8.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"dodge",
+"speed": 12.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"attack_light_1",
+"speed": 15.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"attack_light_2",
+"speed": 15.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"attack_light_3",
+"speed": 15.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"attack_heavy",
+"speed": 10.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"hurt",
+"speed": 10.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"death",
+"speed": 8.0
+}]
+
+[node name="Player" type="CharacterBody2D" groups=["player"]]
+collision_layer = 1
+collision_mask = 5
+script = ExtResource("1_player")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -24)
+shape = SubResource("RectangleShape2D_body")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -32)
+sprite_frames = SubResource("SpriteFrames_player")
+animation = &"idle"
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("2_sm")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateMachine"]
+script = ExtResource("7_idle")
+
+[node name="Move" type="Node" parent="StateMachine"]
+script = ExtResource("8_move")
+
+[node name="Jump" type="Node" parent="StateMachine"]
+script = ExtResource("9_jump")
+
+[node name="Fall" type="Node" parent="StateMachine"]
+script = ExtResource("10_fall")
+
+[node name="Dodge" type="Node" parent="StateMachine"]
+script = ExtResource("11_dodge")
+
+[node name="LightAttack" type="Node" parent="StateMachine"]
+script = ExtResource("12_light")
+
+[node name="HeavyAttack" type="Node" parent="StateMachine"]
+script = ExtResource("13_heavy")
+
+[node name="Hurt" type="Node" parent="StateMachine"]
+script = ExtResource("14_hurt")
+
+[node name="Death" type="Node" parent="StateMachine"]
+script = ExtResource("15_death")
+
+[node name="HealthComponent" type="Node" parent="."]
+script = ExtResource("3_health")
+max_health = 100.0
+current_health = 100.0
+
+[node name="StaminaComponent" type="Node" parent="."]
+script = ExtResource("4_stamina")
+max_stamina = 100.0
+regen_rate = 30.0
+regen_delay = 1.0
+
+[node name="Hurtbox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 8
+script = ExtResource("5_hurtbox")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, -24)
+shape = SubResource("RectangleShape2D_hurtbox")
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 4
+monitoring = false
+monitorable = false
+script = ExtResource("6_hitbox")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(30, -24)
+shape = SubResource("RectangleShape2D_hitbox")
+
+[node name="CoyoteTimer" type="Timer" parent="."]
+wait_time = 0.15
+one_shot = true
+
+[node name="AttackBufferTimer" type="Timer" parent="."]
+wait_time = 0.4
+one_shot = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(0, -50)
+zoom = Vector2(2, 2)
+position_smoothing_enabled = true
+position_smoothing_speed = 8.0

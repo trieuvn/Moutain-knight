@@ -1,0 +1,223 @@
+[gd_scene load_steps=4 format=3 uid="uid://village_main_scene"]
+
+[ext_resource type="Script" path="res://scripts/village/village.gd" id="1_village"]
+[ext_resource type="PackedScene" uid="uid://dxp3f5t8player" path="res://scenes/player/player.tscn" id="2_player"]
+[ext_resource type="PackedScene" uid="uid://hud_main_scene" path="res://scenes/ui/hud.tscn" id="3_hud"]
+
+[sub_resource type="RectangleShape2D" id="ground_shape"]
+size = Vector2(2000, 64)
+
+[sub_resource type="RectangleShape2D" id="wall_shape"]
+size = Vector2(64, 400)
+
+[node name="Village" type="Node2D"]
+script = ExtResource("1_village")
+
+[node name="Background" type="ColorRect" parent="."]
+offset_left = -1000.0
+offset_top = -400.0
+offset_right = 1000.0
+offset_bottom = 400.0
+color = Color(0.06, 0.04, 0.08, 1)
+
+[node name="Ground" type="StaticBody2D" parent="."]
+position = Vector2(0, 250)
+collision_layer = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+shape = SubResource("ground_shape")
+
+[node name="Visual" type="ColorRect" parent="Ground"]
+offset_left = -1000.0
+offset_top = -32.0
+offset_right = 1000.0
+offset_bottom = 32.0
+color = Color(0.12, 0.1, 0.08, 1)
+
+[node name="LeftBoundary" type="StaticBody2D" parent="."]
+position = Vector2(-950, 50)
+collision_layer = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftBoundary"]
+shape = SubResource("wall_shape")
+
+[node name="RightBoundary" type="StaticBody2D" parent="."]
+position = Vector2(950, 50)
+collision_layer = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightBoundary"]
+shape = SubResource("wall_shape")
+
+[node name="PlayerSpawnPoint" type="Marker2D" parent="."]
+position = Vector2(-400, 200)
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+position = Vector2(-400, 200)
+
+[node name="HUD" parent="." instance=ExtResource("3_hud")]
+
+[node name="NPCs" type="Node2D" parent="."]
+
+[node name="Blacksmith" type="Area2D" parent="NPCs"]
+position = Vector2(-200, 200)
+collision_layer = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NPCs/Blacksmith"]
+shape = SubResource("wall_shape")
+scale = Vector2(0.3, 0.5)
+
+[node name="Visual" type="ColorRect" parent="NPCs/Blacksmith"]
+offset_left = -15.0
+offset_top = -50.0
+offset_right = 15.0
+offset_bottom = 0.0
+color = Color(0.5, 0.3, 0.2, 1)
+
+[node name="Label" type="Label" parent="NPCs/Blacksmith"]
+offset_left = -50.0
+offset_top = -70.0
+offset_right = 50.0
+offset_bottom = -50.0
+theme_override_colors/font_color = Color(0.8, 0.7, 0.5, 1)
+theme_override_font_sizes/font_size = 14
+text = "BLACKSMITH"
+horizontal_alignment = 1
+
+[node name="InteractLabel" type="Label" parent="NPCs/Blacksmith"]
+visible = false
+offset_left = -30.0
+offset_top = 10.0
+offset_right = 30.0
+offset_bottom = 30.0
+theme_override_colors/font_color = Color(1, 1, 0.7, 1)
+theme_override_font_sizes/font_size = 12
+text = "[E] Talk"
+horizontal_alignment = 1
+
+[node name="Merchant" type="Area2D" parent="NPCs"]
+position = Vector2(0, 200)
+collision_layer = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NPCs/Merchant"]
+shape = SubResource("wall_shape")
+scale = Vector2(0.3, 0.5)
+
+[node name="Visual" type="ColorRect" parent="NPCs/Merchant"]
+offset_left = -15.0
+offset_top = -50.0
+offset_right = 15.0
+offset_bottom = 0.0
+color = Color(0.3, 0.4, 0.5, 1)
+
+[node name="Label" type="Label" parent="NPCs/Merchant"]
+offset_left = -40.0
+offset_top = -70.0
+offset_right = 40.0
+offset_bottom = -50.0
+theme_override_colors/font_color = Color(0.8, 0.7, 0.5, 1)
+theme_override_font_sizes/font_size = 14
+text = "MERCHANT"
+horizontal_alignment = 1
+
+[node name="InteractLabel" type="Label" parent="NPCs/Merchant"]
+visible = false
+offset_left = -30.0
+offset_top = 10.0
+offset_right = 30.0
+offset_bottom = 30.0
+theme_override_colors/font_color = Color(1, 1, 0.7, 1)
+theme_override_font_sizes/font_size = 12
+text = "[E] Shop"
+horizontal_alignment = 1
+
+[node name="Elder" type="Area2D" parent="NPCs"]
+position = Vector2(200, 200)
+collision_layer = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NPCs/Elder"]
+shape = SubResource("wall_shape")
+scale = Vector2(0.3, 0.5)
+
+[node name="Visual" type="ColorRect" parent="NPCs/Elder"]
+offset_left = -15.0
+offset_top = -50.0
+offset_right = 15.0
+offset_bottom = 0.0
+color = Color(0.4, 0.3, 0.5, 1)
+
+[node name="Label" type="Label" parent="NPCs/Elder"]
+offset_left = -30.0
+offset_top = -70.0
+offset_right = 30.0
+offset_bottom = -50.0
+theme_override_colors/font_color = Color(0.8, 0.7, 0.5, 1)
+theme_override_font_sizes/font_size = 14
+text = "ELDER"
+horizontal_alignment = 1
+
+[node name="InteractLabel" type="Label" parent="NPCs/Elder"]
+visible = false
+offset_left = -40.0
+offset_top = 10.0
+offset_right = 40.0
+offset_bottom = 30.0
+theme_override_colors/font_color = Color(1, 1, 0.7, 1)
+theme_override_font_sizes/font_size = 12
+text = "[E] Upgrades"
+horizontal_alignment = 1
+
+[node name="DungeonPortal" type="Area2D" parent="."]
+position = Vector2(600, 180)
+collision_layer = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DungeonPortal"]
+shape = SubResource("wall_shape")
+scale = Vector2(0.8, 0.8)
+
+[node name="Visual" type="ColorRect" parent="DungeonPortal"]
+offset_left = -30.0
+offset_top = -80.0
+offset_right = 30.0
+offset_bottom = 20.0
+color = Color(0.2, 0.1, 0.3, 1)
+
+[node name="PortalEffect" type="ColorRect" parent="DungeonPortal"]
+offset_left = -20.0
+offset_top = -60.0
+offset_right = 20.0
+offset_bottom = 0.0
+color = Color(0.6, 0.2, 0.8, 0.6)
+
+[node name="Label" type="Label" parent="DungeonPortal"]
+offset_left = -60.0
+offset_top = -100.0
+offset_right = 60.0
+offset_bottom = -80.0
+theme_override_colors/font_color = Color(0.7, 0.4, 0.9, 1)
+theme_override_font_sizes/font_size = 16
+text = "DUNGEON"
+horizontal_alignment = 1
+
+[node name="InteractLabel" type="Label" parent="DungeonPortal"]
+visible = false
+offset_left = -40.0
+offset_top = 30.0
+offset_right = 40.0
+offset_bottom = 50.0
+theme_override_colors/font_color = Color(1, 1, 0.7, 1)
+theme_override_font_sizes/font_size = 12
+text = "[E] Enter"
+horizontal_alignment = 1
+
+[node name="AmbientLight" type="CanvasModulate" parent="."]
+color = Color(0.7, 0.65, 0.8, 1)
+
+[node name="VillageUI" type="CanvasLayer" parent="."]
+layer = 5
+
+[node name="SaveIndicator" type="Label" parent="VillageUI"]
+offset_left = 20.0
+offset_bottom = 30.0
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
+theme_override_font_sizes/font_size = 14
+text = "Village - Safe Zone"

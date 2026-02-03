@@ -1,0 +1,217 @@
+[gd_scene load_steps=11 format=3 uid="uid://fallen_templar_boss"]
+
+[ext_resource type="Script" path="res://scripts/bosses/fallen_templar/fallen_templar.gd" id="1_templar"]
+[ext_resource type="Script" path="res://scripts/components/state_machine.gd" id="2_sm"]
+[ext_resource type="Script" path="res://scripts/components/health_component.gd" id="3_health"]
+[ext_resource type="Script" path="res://scripts/components/hurtbox.gd" id="4_hurtbox"]
+[ext_resource type="Script" path="res://scripts/components/hitbox.gd" id="5_hitbox"]
+[ext_resource type="Script" path="res://scripts/bosses/states/idle_state.gd" id="6_idle"]
+[ext_resource type="Script" path="res://scripts/bosses/states/approach_state.gd" id="7_approach"]
+[ext_resource type="Script" path="res://scripts/bosses/states/attack_state.gd" id="8_attack"]
+[ext_resource type="Script" path="res://scripts/bosses/states/phase_transition_state.gd" id="9_phase"]
+[ext_resource type="Script" path="res://scripts/bosses/states/defeated_state.gd" id="10_defeated"]
+
+[sub_resource type="RectangleShape2D" id="body_shape"]
+size = Vector2(40, 80)
+
+[sub_resource type="RectangleShape2D" id="hurtbox_shape"]
+size = Vector2(36, 75)
+
+[sub_resource type="RectangleShape2D" id="sword_hitbox_shape"]
+size = Vector2(60, 50)
+
+[sub_resource type="RectangleShape2D" id="shield_hitbox_shape"]
+size = Vector2(40, 60)
+
+[sub_resource type="RectangleShape2D" id="ground_slam_shape"]
+size = Vector2(300, 40)
+
+[sub_resource type="SpriteFrames" id="templar_frames"]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"idle",
+"speed": 6.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"walk",
+"speed": 8.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"telegraph",
+"speed": 8.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"attack_slash",
+"speed": 15.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"attack_overhead",
+"speed": 12.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"attack_shield",
+"speed": 15.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"attack_charge",
+"speed": 12.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"attack_combo",
+"speed": 15.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"attack_smite",
+"speed": 12.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"attack_projectile",
+"speed": 12.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"attack_rising",
+"speed": 15.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"shield_stance",
+"speed": 8.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"attack_berserk",
+"speed": 18.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"attack_judgment",
+"speed": 10.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"resurrection",
+"speed": 6.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"attack_triple_projectile",
+"speed": 12.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"phase_transition",
+"speed": 8.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"death",
+"speed": 6.0
+}]
+
+[node name="FallenTemplar" type="CharacterBody2D" groups=["boss", "enemies"]]
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("1_templar")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -40)
+shape = SubResource("body_shape")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -48)
+scale = Vector2(1.5, 1.5)
+sprite_frames = SubResource("templar_frames")
+animation = &"idle"
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("2_sm")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateMachine"]
+script = ExtResource("6_idle")
+
+[node name="Approach" type="Node" parent="StateMachine"]
+script = ExtResource("7_approach")
+
+[node name="Attack" type="Node" parent="StateMachine"]
+script = ExtResource("8_attack")
+
+[node name="PhaseTransition" type="Node" parent="StateMachine"]
+script = ExtResource("9_phase")
+
+[node name="Defeated" type="Node" parent="StateMachine"]
+script = ExtResource("10_defeated")
+
+[node name="HealthComponent" type="Node" parent="."]
+script = ExtResource("3_health")
+max_health = 500.0
+current_health = 500.0
+
+[node name="Hurtbox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 8
+script = ExtResource("4_hurtbox")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, -40)
+shape = SubResource("hurtbox_shape")
+
+[node name="SwordHitbox" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 4
+monitoring = false
+monitorable = false
+script = ExtResource("5_hitbox")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SwordHitbox"]
+position = Vector2(50, -40)
+shape = SubResource("sword_hitbox_shape")
+
+[node name="ShieldHitbox" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 4
+monitoring = false
+monitorable = false
+script = ExtResource("5_hitbox")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ShieldHitbox"]
+position = Vector2(35, -45)
+shape = SubResource("shield_hitbox_shape")
+
+[node name="GroundSlamArea" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 4
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GroundSlamArea"]
+position = Vector2(0, -20)
+shape = SubResource("ground_slam_shape")
+
+[node name="AttackTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="TelegraphIndicator" type="Node2D" parent="."]
+visible = false
+
+[node name="Visual" type="ColorRect" parent="TelegraphIndicator"]
+offset_left = -30.0
+offset_top = -100.0
+offset_right = 30.0
+offset_bottom = 0.0
+color = Color(1, 0.3, 0.1, 0.4)
+
+[node name="HolyProjectileSpawn" type="Marker2D" parent="."]
+position = Vector2(40, -50)
