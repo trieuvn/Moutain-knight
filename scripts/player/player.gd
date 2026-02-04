@@ -51,9 +51,15 @@ var dodge_direction: Vector2 = Vector2.ZERO
 
 
 func _ready() -> void:
+	_load_sprites()
 	_initialize_components()
 	_connect_signals()
 	_apply_game_manager_stats()
+
+
+func _load_sprites() -> void:
+	# Load sprite frames from sprite sheets
+	SpriteLoader.setup_player_sprite_frames(sprite)
 
 
 func _initialize_components() -> void:

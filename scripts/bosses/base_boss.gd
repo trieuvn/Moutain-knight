@@ -59,10 +59,18 @@ var gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 func _ready() -> void:
 	add_to_group("boss")
+	_load_sprites()
 	_setup_phases()
 	_initialize_components()
 	_connect_signals()
 	EventBus.boss_spawned.emit(self)
+
+
+func _load_sprites() -> void:
+	# Override in child classes for specific sprites
+	# Default: try to load boss sprites
+	if sprite and ResourceLoader.exists("res://assets/sprites/bosses/fallen_templar_boss_1770125098193.png"):
+		SpriteLoader.setup_boss_sprite_frames(sprite)
 
 
 func _setup_phases() -> void:

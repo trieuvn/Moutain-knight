@@ -50,8 +50,16 @@ var gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 
 func _ready() -> void:
+	_load_sprites()
 	_initialize_components()
 	_connect_signals()
+
+
+func _load_sprites() -> void:
+	# Override in child classes for specific sprites
+	# Default: try to load skeleton sprites
+	if sprite and ResourceLoader.exists("res://assets/sprites/enemies/skeleton_enemy_sprites_1770124993026.png"):
+		SpriteLoader.setup_skeleton_sprite_frames(sprite)
 
 
 func _initialize_components() -> void:
