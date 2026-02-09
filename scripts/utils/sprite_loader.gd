@@ -1,10 +1,11 @@
-# Sprite Loader - Using real downloaded sprite sheets from OpenGameArt
+# Sprite Loader - Using PixelLab-generated sprites for side-scroller
 extends Node
 class_name SpriteLoader
 
-# Downloaded sprite paths
-const PLAYER_SPRITESHEET = "res://assets/sprites/player/knight_spritesheet.png"
-const SKELETON_SPRITESHEET = "res://assets/sprites/enemies/skeleton_spritesheet.png"
+# PixelLab sprite paths
+const PLAYER_PATH = "res://assets/sprites/player/penitent_knight/"
+const SKELETON_PATH = "res://assets/sprites/enemies/skeleton_warrior/"
+const BOSS_PATH = "res://assets/sprites/bosses/corrupted_bishop/"
 
 
 static func setup_player_sprite_frames(sprite: AnimatedSprite2D) -> void:
@@ -13,39 +14,55 @@ static func setup_player_sprite_frames(sprite: AnimatedSprite2D) -> void:
 	if sprite_frames.has_animation("default"):
 		sprite_frames.remove_animation("default")
 	
-	# Try to load knight spritesheet
-	var tex: Texture2D = null
-	if ResourceLoader.exists(PLAYER_SPRITESHEET):
-		tex = load(PLAYER_SPRITESHEET) as Texture2D
-		print("✓ Loaded knight spritesheet")
-	else:
-		print("✗ Could not find knight spritesheet")
+	# Load PixelLab generated sprites
+	var base_path = PLAYER_PATH
+	var rotations_path = base_path + "rotations/"
+	var animations_path = base_path + "animations/"
 	
-	if tex:
-		# Knight spritesheet layout (16x16 frames, 64x64 canvas):
-		# Row 1: idle (frames 0-4)
-		# Row 2: run (frames 5-12) 
-		# Row 3: jump (frames 13-15)
-		# Row 4: fall (frames 16-17)
-		# Row 5: attack (frames 18-23)
-		# Row 6: hit (frame 24)
-		# Row 7: dead (frames 25-31)
-		# Row 8: block (frames 32-33)
+	# Check if PixelLab sprites exist
+	if ResourceLoader.exists(rotations_path + "east.png"):
+		print("✓ Loading PixelLab Penitent Knight sprites")
 		
-		_add_spritesheet_animation(sprite_frames, "idle", tex, 0, 5, 6.0, true)
-		_add_spritesheet_animation(sprite_frames, "run", tex, 5, 8, 12.0, true)
-		_add_spritesheet_animation(sprite_frames, "jump", tex, 13, 3, 10.0, false)
-		_add_spritesheet_animation(sprite_frames, "fall", tex, 16, 2, 8.0, true)
-		_add_spritesheet_animation(sprite_frames, "attack_light_1", tex, 18, 6, 15.0, false)
-		_add_spritesheet_animation(sprite_frames, "attack_light_2", tex, 18, 6, 15.0, false)
-		_add_spritesheet_animation(sprite_frames, "attack_light_3", tex, 18, 6, 15.0, false)
-		_add_spritesheet_animation(sprite_frames, "attack_heavy", tex, 18, 6, 12.0, false)
-		_add_spritesheet_animation(sprite_frames, "hurt", tex, 24, 1, 10.0, false)
-		_add_spritesheet_animation(sprite_frames, "death", tex, 25, 7, 8.0, false)
-		_add_spritesheet_animation(sprite_frames, "dodge", tex, 32, 2, 15.0, false)
+		# Load directional static sprites (for when no animation is playing)
+		var east_tex = load(rotations_path + "east.png") as Texture2D
+		var west_tex = load(rotations_path + "west.png") as Texture2D
+		
+		# For 2D side-scroller, we mainly use east/west
+		# Create idle animation - use static sprite or animation frames if available
+		if ResourceLoader.exists(animations_path + "breathing-idle/south/frame_000.png"):
+			# Use breathing-idle animation
+			_add_animation_from_folder(sprite_frames, "idle", animations_path + "breathing-idle/south/", 8.0, true)
+		else:
+			# Fallback to static east sprite
+			_add_single_frame(sprite_frames, "idle", east_tex, 8.0, true)
+		
+		# Other animations - use static sprites for now
+		# Run: use east sprite
+		_add_single_frame(sprite_frames, "run", east_tex, 12.0, true)
+		
+		# Jump: use east sprite
+		_add_single_frame(sprite_frames, "jump", east_tex, 10.0, false)
+		
+		# Fall: use east sprite  
+		_add_single_frame(sprite_frames, "fall", east_tex, 8.0, true)
+		
+		# Attack animations
+		_add_single_frame(sprite_frames, "attack_light_1", east_tex, 15.0, false)
+		_add_single_frame(sprite_frames, "attack_light_2", east_tex, 15.0, false)
+		_add_single_frame(sprite_frames, "attack_light_3", east_tex, 15.0, false)
+		_add_single_frame(sprite_frames, "attack_heavy", east_tex, 12.0, false)
+		
+		# Hurt/Death
+		_add_single_frame(sprite_frames, "hurt", east_tex, 10.0, false)
+		_add_single_frame(sprite_frames, "death", east_tex, 8.0, false)
+		
+		# Dodge
+		_add_single_frame(sprite_frames, "dodge", east_tex, 15.0, false)
+		
+		print("✓ PixelLab player sprites loaded")
 	else:
-		# Fallback to placeholder
-		_create_placeholder_animations(sprite_frames, Color(0.2, 0.4, 0.8), Vector2(48, 64))
+		print("✗ PixelLab sprites not found, using placeholder")
+		_create_placeholder_animations(sprite_frames, Color(0.2, 0.4, 0.8), Vector2(64, 64))
 	
 	sprite.sprite_frames = sprite_frames
 	sprite.play("idle")
@@ -57,38 +74,25 @@ static func setup_skeleton_sprite_frames(sprite: AnimatedSprite2D) -> void:
 	if sprite_frames.has_animation("default"):
 		sprite_frames.remove_animation("default")
 	
-	# Try to load skeleton spritesheet 
-	var tex: Texture2D = null
-	if ResourceLoader.exists(SKELETON_SPRITESHEET):
-		tex = load(SKELETON_SPRITESHEET) as Texture2D
-		print("✓ Loaded skeleton spritesheet")
-	else:
-		print("✗ Could not find skeleton spritesheet")
+	var base_path = SKELETON_PATH
+	var rotations_path = base_path + "rotations/"
 	
-	if tex:
-		# Skeleton spritesheet: 3 rows
-		# Row 1: walk (4 frames)
-		# Row 2: attack (7 frames)  
-		# Row 3: dead (5 frames)
+	if ResourceLoader.exists(rotations_path + "east.png"):
+		print("✓ Loading PixelLab Skeleton Warrior sprites")
 		
-		var width = tex.get_width()
-		var height = tex.get_height()
-		var rows = 3
-		var frame_height = height / rows
+		var east_tex = load(rotations_path + "east.png") as Texture2D
 		
-		# Walk animation - row 1
-		_add_skeleton_row(sprite_frames, "idle", tex, 0, 4, frame_height, 6.0, true)
-		_add_skeleton_row(sprite_frames, "walk", tex, 0, 4, frame_height, 8.0, true)
+		# Create all animations using static sprite
+		_add_single_frame(sprite_frames, "idle", east_tex, 6.0, true)
+		_add_single_frame(sprite_frames, "walk", east_tex, 8.0, true)
+		_add_single_frame(sprite_frames, "attack", east_tex, 12.0, false)
+		_add_single_frame(sprite_frames, "hurt", east_tex, 10.0, false)
+		_add_single_frame(sprite_frames, "death", east_tex, 8.0, false)
 		
-		# Attack animation - row 2
-		_add_skeleton_row(sprite_frames, "attack", tex, 1, 7, frame_height, 12.0, false)
-		
-		# Dead animation - row 3
-		_add_skeleton_row(sprite_frames, "hurt", tex, 2, 2, frame_height, 10.0, false)
-		_add_skeleton_row(sprite_frames, "death", tex, 2, 5, frame_height, 8.0, false)
+		print("✓ PixelLab skeleton sprites loaded")
 	else:
-		# Fallback
-		_create_placeholder_animations(sprite_frames, Color(0.7, 0.7, 0.7), Vector2(32, 48))
+		print("✗ PixelLab skeleton sprites not found, using placeholder")
+		_create_placeholder_animations(sprite_frames, Color(0.7, 0.7, 0.7), Vector2(48, 48))
 	
 	sprite.sprite_frames = sprite_frames
 	sprite.play("idle")
@@ -100,20 +104,43 @@ static func setup_boss_sprite_frames(sprite: AnimatedSprite2D) -> void:
 	if sprite_frames.has_animation("default"):
 		sprite_frames.remove_animation("default")
 	
-	# Boss uses larger placeholder for now
-	_create_placeholder_animations(sprite_frames, Color(0.8, 0.2, 0.2), Vector2(80, 100))
+	var base_path = BOSS_PATH
+	var rotations_path = base_path + "rotations/"
+	
+	if ResourceLoader.exists(rotations_path + "east.png"):
+		print("✓ Loading PixelLab Corrupted Bishop Boss sprites")
+		
+		var east_tex = load(rotations_path + "east.png") as Texture2D
+		
+		# Boss animations
+		_add_single_frame(sprite_frames, "idle", east_tex, 4.0, true)
+		_add_single_frame(sprite_frames, "walk", east_tex, 6.0, true)
+		
+		# Attack patterns for boss
+		_add_single_frame(sprite_frames, "attack_slash", east_tex, 12.0, false)
+		_add_single_frame(sprite_frames, "attack_overhead", east_tex, 10.0, false)
+		_add_single_frame(sprite_frames, "attack_shield", east_tex, 8.0, false)
+		_add_single_frame(sprite_frames, "attack", east_tex, 12.0, false)
+		
+		# Utility
+		_add_single_frame(sprite_frames, "hurt", east_tex, 10.0, false)
+		_add_single_frame(sprite_frames, "death", east_tex, 6.0, false)
+		_add_single_frame(sprite_frames, "stun", east_tex, 8.0, true)
+		
+		print("✓ PixelLab boss sprites loaded")
+	else:
+		print("✗ PixelLab boss sprites not found, using placeholder")
+		_create_placeholder_animations(sprite_frames, Color(0.8, 0.2, 0.2), Vector2(128, 128))
 	
 	sprite.sprite_frames = sprite_frames
 	sprite.play("idle")
 
 
-# Add animation from horizontal spritesheet (all frames in one row)
-static func _add_spritesheet_animation(
+# Add animation from folder of frame images
+static func _add_animation_from_folder(
 	frames: SpriteFrames,
 	anim_name: String,
-	texture: Texture2D,
-	start_frame: int,
-	frame_count: int,
+	folder_path: String,
 	speed: float,
 	loop: bool
 ) -> void:
@@ -121,39 +148,35 @@ static func _add_spritesheet_animation(
 	frames.set_animation_speed(anim_name, speed)
 	frames.set_animation_loop(anim_name, loop)
 	
-	# Spritesheet is 64x64 per frame in a horizontal strip
-	var frame_size = 64
+	# Load frames in order
+	var frame_idx = 0
+	while true:
+		var frame_path = folder_path + "frame_%03d.png" % frame_idx
+		if ResourceLoader.exists(frame_path):
+			var tex = load(frame_path) as Texture2D
+			frames.add_frame(anim_name, tex)
+			frame_idx += 1
+		else:
+			break
 	
-	for i in range(frame_count):
-		var atlas = AtlasTexture.new()
-		atlas.atlas = texture
-		atlas.region = Rect2((start_frame + i) * frame_size, 0, frame_size, frame_size)
-		frames.add_frame(anim_name, atlas)
+	if frame_idx == 0:
+		# No frames found, add placeholder
+		var placeholder = _create_placeholder(Color.MAGENTA, Vector2(64, 64))
+		frames.add_frame(anim_name, placeholder)
 
 
-# Add animation from skeleton spritesheet row
-static func _add_skeleton_row(
+# Add single frame as animation
+static func _add_single_frame(
 	frames: SpriteFrames,
 	anim_name: String,
 	texture: Texture2D,
-	row: int,
-	frame_count: int,
-	row_height: float,
 	speed: float,
 	loop: bool
 ) -> void:
 	frames.add_animation(anim_name)
 	frames.set_animation_speed(anim_name, speed)
 	frames.set_animation_loop(anim_name, loop)
-	
-	var width = texture.get_width()
-	var frame_width = width / frame_count
-	
-	for i in range(frame_count):
-		var atlas = AtlasTexture.new()
-		atlas.atlas = texture
-		atlas.region = Rect2(i * frame_width, row * row_height, frame_width, row_height)
-		frames.add_frame(anim_name, atlas)
+	frames.add_frame(anim_name, texture)
 
 
 static func _create_placeholder_animations(frames: SpriteFrames, color: Color, size: Vector2) -> void:
@@ -161,7 +184,7 @@ static func _create_placeholder_animations(frames: SpriteFrames, color: Color, s
 	var animations = ["idle", "run", "jump", "fall", "dodge",
 					  "attack_light_1", "attack_light_2", "attack_light_3",
 					  "attack_heavy", "attack_slash", "attack_overhead", "attack_shield",
-					  "hurt", "death", "walk", "attack"]
+					  "hurt", "death", "walk", "attack", "stun"]
 	
 	for anim_name in animations:
 		frames.add_animation(anim_name)
