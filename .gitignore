@@ -14,3 +14,7 @@ export_credentials.cfg
 .mono/
 data_*/
 mono_crash.*.json
+
+# Local documentation and tools (not for GitHub)
+docs/
+tools/

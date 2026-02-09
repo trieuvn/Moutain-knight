@@ -2,12 +2,21 @@
 extends Node
 class_name SpriteLoader
 
-# PixelLab sprite paths
+# PixelLab sprite paths - Account 1
 const PLAYER_PATH = "res://assets/sprites/player/penitent_knight/"
 const SKELETON_PATH = "res://assets/sprites/enemies/skeleton_warrior/"
-const BOSS_PATH = "res://assets/sprites/bosses/corrupted_bishop/"
+const CORRUPTED_BISHOP_PATH = "res://assets/sprites/bosses/corrupted_bishop/"
 
+# PixelLab sprite paths - Account 2
+const GHOUL_PATH = "res://assets/sprites/enemies/ghoul/"
+const CULTIST_PATH = "res://assets/sprites/enemies/cultist/"
+const BLOOD_WRAITH_PATH = "res://assets/sprites/bosses/blood_wraith/"
 
+# PixelLab sprite paths - Account 3
+const NUN_SHOPKEEPER_PATH = "res://assets/sprites/npcs/nun_shopkeeper/"
+
+# Legacy alias
+const BOSS_PATH = CORRUPTED_BISHOP_PATH
 static func setup_player_sprite_frames(sprite: AnimatedSprite2D) -> void:
 	var sprite_frames = SpriteFrames.new()
 	
@@ -131,6 +140,134 @@ static func setup_boss_sprite_frames(sprite: AnimatedSprite2D) -> void:
 	else:
 		print("✗ PixelLab boss sprites not found, using placeholder")
 		_create_placeholder_animations(sprite_frames, Color(0.8, 0.2, 0.2), Vector2(128, 128))
+	
+	sprite.sprite_frames = sprite_frames
+	sprite.play("idle")
+
+
+static func setup_ghoul_sprite_frames(sprite: AnimatedSprite2D) -> void:
+	var sprite_frames = SpriteFrames.new()
+	
+	if sprite_frames.has_animation("default"):
+		sprite_frames.remove_animation("default")
+	
+	var rotations_path = GHOUL_PATH + "rotations/"
+	var animations_path = GHOUL_PATH + "animations/"
+	
+	if ResourceLoader.exists(rotations_path + "east.png"):
+		print("✓ Loading PixelLab Ghoul sprites")
+		
+		var east_tex = load(rotations_path + "east.png") as Texture2D
+		
+		# Check for walk animation (scary-walk)
+		if ResourceLoader.exists(animations_path + "walk/east/frame_000.png"):
+			_add_animation_from_folder(sprite_frames, "walk", animations_path + "walk/east/", 10.0, true)
+			_add_animation_from_folder(sprite_frames, "idle", animations_path + "walk/east/", 6.0, true)
+		else:
+			_add_single_frame(sprite_frames, "idle", east_tex, 6.0, true)
+			_add_single_frame(sprite_frames, "walk", east_tex, 8.0, true)
+		
+		_add_single_frame(sprite_frames, "attack", east_tex, 12.0, false)
+		_add_single_frame(sprite_frames, "hurt", east_tex, 10.0, false)
+		_add_single_frame(sprite_frames, "death", east_tex, 8.0, false)
+		
+		print("✓ PixelLab ghoul sprites loaded")
+	else:
+		print("✗ PixelLab ghoul sprites not found, using placeholder")
+		_create_placeholder_animations(sprite_frames, Color(0.3, 0.5, 0.3), Vector2(48, 48))
+	
+	sprite.sprite_frames = sprite_frames
+	sprite.play("idle")
+
+
+static func setup_cultist_sprite_frames(sprite: AnimatedSprite2D) -> void:
+	var sprite_frames = SpriteFrames.new()
+	
+	if sprite_frames.has_animation("default"):
+		sprite_frames.remove_animation("default")
+	
+	var rotations_path = CULTIST_PATH + "rotations/"
+	
+	if ResourceLoader.exists(rotations_path + "east.png"):
+		print("✓ Loading PixelLab Cultist sprites")
+		
+		var east_tex = load(rotations_path + "east.png") as Texture2D
+		
+		_add_single_frame(sprite_frames, "idle", east_tex, 6.0, true)
+		_add_single_frame(sprite_frames, "walk", east_tex, 8.0, true)
+		_add_single_frame(sprite_frames, "attack", east_tex, 12.0, false)
+		_add_single_frame(sprite_frames, "cast", east_tex, 10.0, false)
+		_add_single_frame(sprite_frames, "hurt", east_tex, 10.0, false)
+		_add_single_frame(sprite_frames, "death", east_tex, 8.0, false)
+		
+		print("✓ PixelLab cultist sprites loaded")
+	else:
+		print("✗ PixelLab cultist sprites not found, using placeholder")
+		_create_placeholder_animations(sprite_frames, Color(0.2, 0.1, 0.3), Vector2(48, 48))
+	
+	sprite.sprite_frames = sprite_frames
+	sprite.play("idle")
+
+
+static func setup_blood_wraith_sprite_frames(sprite: AnimatedSprite2D) -> void:
+	var sprite_frames = SpriteFrames.new()
+	
+	if sprite_frames.has_animation("default"):
+		sprite_frames.remove_animation("default")
+	
+	var rotations_path = BLOOD_WRAITH_PATH + "rotations/"
+	
+	if ResourceLoader.exists(rotations_path + "east.png"):
+		print("✓ Loading PixelLab Blood Wraith Boss sprites")
+		
+		var east_tex = load(rotations_path + "east.png") as Texture2D
+		
+		# Boss animations
+		_add_single_frame(sprite_frames, "idle", east_tex, 4.0, true)
+		_add_single_frame(sprite_frames, "walk", east_tex, 6.0, true)
+		_add_single_frame(sprite_frames, "float", east_tex, 4.0, true)
+		
+		# Attack patterns
+		_add_single_frame(sprite_frames, "attack", east_tex, 12.0, false)
+		_add_single_frame(sprite_frames, "attack_claw", east_tex, 14.0, false)
+		_add_single_frame(sprite_frames, "attack_blood_rain", east_tex, 8.0, false)
+		_add_single_frame(sprite_frames, "teleport", east_tex, 15.0, false)
+		
+		# Utility
+		_add_single_frame(sprite_frames, "hurt", east_tex, 10.0, false)
+		_add_single_frame(sprite_frames, "death", east_tex, 6.0, false)
+		_add_single_frame(sprite_frames, "stun", east_tex, 8.0, true)
+		
+		print("✓ PixelLab Blood Wraith sprites loaded")
+	else:
+		print("✗ PixelLab Blood Wraith sprites not found, using placeholder")
+		_create_placeholder_animations(sprite_frames, Color(0.6, 0.1, 0.1), Vector2(128, 128))
+	
+	sprite.sprite_frames = sprite_frames
+	sprite.play("idle")
+
+
+static func setup_nun_shopkeeper_sprite_frames(sprite: AnimatedSprite2D) -> void:
+	var sprite_frames = SpriteFrames.new()
+	
+	if sprite_frames.has_animation("default"):
+		sprite_frames.remove_animation("default")
+	
+	var rotations_path = NUN_SHOPKEEPER_PATH + "rotations/"
+	
+	if ResourceLoader.exists(rotations_path + "south.png"):
+		print("✓ Loading PixelLab Nun Shopkeeper sprites")
+		
+		var south_tex = load(rotations_path + "south.png") as Texture2D
+		
+		# NPC only needs idle and talk animations
+		_add_single_frame(sprite_frames, "idle", south_tex, 4.0, true)
+		_add_single_frame(sprite_frames, "talk", south_tex, 6.0, true)
+		
+		print("✓ PixelLab Nun Shopkeeper sprites loaded")
+	else:
+		print("✗ PixelLab Nun Shopkeeper sprites not found, using placeholder")
+		_create_placeholder_animations(sprite_frames, Color(0.8, 0.8, 0.9), Vector2(64, 64))
 	
 	sprite.sprite_frames = sprite_frames
 	sprite.play("idle")
