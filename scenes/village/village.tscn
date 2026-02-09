@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://village_main_scene"]
+[gd_scene load_steps=5 format=3 uid="uid://village_main_scene"]
 
 [ext_resource type="Script" path="res://scripts/village/village.gd" id="1_village"]
 [ext_resource type="PackedScene" uid="uid://dxp3f5t8player" path="res://scenes/player/player.tscn" id="2_player"]
 [ext_resource type="PackedScene" uid="uid://hud_main_scene" path="res://scenes/ui/hud.tscn" id="3_hud"]
+[ext_resource type="PackedScene" uid="uid://npc_merchant_scene" path="res://scenes/npcs/merchant.tscn" id="4_merchant"]
 
 [sub_resource type="RectangleShape2D" id="ground_shape"]
 size = Vector2(2000, 64)
@@ -94,41 +95,8 @@ theme_override_font_sizes/font_size = 12
 text = "[E] Talk"
 horizontal_alignment = 1
 
-[node name="Merchant" type="Area2D" parent="NPCs"]
+[node name="Merchant" parent="NPCs" instance=ExtResource("4_merchant")]
 position = Vector2(0, 200)
-collision_layer = 6
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="NPCs/Merchant"]
-shape = SubResource("wall_shape")
-scale = Vector2(0.3, 0.5)
-
-[node name="Visual" type="ColorRect" parent="NPCs/Merchant"]
-offset_left = -15.0
-offset_top = -50.0
-offset_right = 15.0
-offset_bottom = 0.0
-color = Color(0.3, 0.4, 0.5, 1)
-
-[node name="Label" type="Label" parent="NPCs/Merchant"]
-offset_left = -40.0
-offset_top = -70.0
-offset_right = 40.0
-offset_bottom = -50.0
-theme_override_colors/font_color = Color(0.8, 0.7, 0.5, 1)
-theme_override_font_sizes/font_size = 14
-text = "MERCHANT"
-horizontal_alignment = 1
-
-[node name="InteractLabel" type="Label" parent="NPCs/Merchant"]
-visible = false
-offset_left = -30.0
-offset_top = 10.0
-offset_right = 30.0
-offset_bottom = 30.0
-theme_override_colors/font_color = Color(1, 1, 0.7, 1)
-theme_override_font_sizes/font_size = 12
-text = "[E] Shop"
-horizontal_alignment = 1
 
 [node name="Elder" type="Area2D" parent="NPCs"]
 position = Vector2(200, 200)

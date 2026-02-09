@@ -97,7 +97,7 @@
 - **Animations Completed:**
   - ✅ `scary-walk` (walk animation)
 - **Download URL:** https://api.pixellab.ai/mcp/characters/2e76a103-4c46-4b6d-954f-ffc400b41c24/download
-- **Status:** Processing
+- **Status:** ✅ Downloaded to `assets/sprites/enemies/ghoul/`
 
 ---
 
@@ -109,7 +109,7 @@
 - **Description:** dark cultist enemy, hooded figure with glowing red eyes, black robes
 - **Animations Completed:** None
 - **Download URL:** https://api.pixellab.ai/mcp/characters/23ced8a3-e847-4a8d-a034-7b05e4e92ca6/download
-- **Status:** Processing
+- **Status:** ✅ Downloaded to `assets/sprites/enemies/cultist/`
 
 ---
 
@@ -121,7 +121,7 @@
 - **Description:** blood wraith boss, floating spectral horror with skeletal face, blood-red robes
 - **Animations Completed:** None
 - **Download URL:** https://api.pixellab.ai/mcp/characters/b2dac78f-415c-48d1-aa87-8874e4f18783/download
-- **Status:** Processing
+- **Status:** ✅ Downloaded to `assets/sprites/bosses/blood_wraith/`
 
 ---
 
@@ -133,19 +133,27 @@
 - **Type:** Sidescroller
 - **Size:** 32×32px tiles
 - **Description:** ancient temple stone floor, cracked holy tiles, Blasphemous cathedral style
-- **Status:** Processing
+- **Status:** ✅ Downloaded to `assets/tilesets/temple_tileset.png`
 
 ---
 
-## Account 3 (Reserved)
-**Purpose:** Additional characters (more enemies, NPCs)
-**Token Status:** Not configured yet
+## Account 3 (Active)
+**Account ID:** `0db9b2e1-4a9e-4872-8179-2aadbbb43956`
+**API Token:** `7dcaca42-5097-406a-b003-41711cbad809`
+**Purpose:** NPCs and additional assets
+**Token Status:** Character trial used
 
-### Planned Characters:
-- [ ] Ghoul enemy (melee)
-- [ ] Cultist enemy (ranged)
-- [ ] Village NPC (blacksmith)
-- [ ] Village NPC (shopkeeper)
+### Characters Created:
+
+#### 1. Nun Shopkeeper (Sister Miriam)
+- **Character ID:** `909b39d1-9b7d-4a8a-af3c-bdbbdc45787a`
+- **Size:** 64×64px
+- **View:** side
+- **Directions:** 4
+- **Description:** divine nun shopkeeper NPC, gothic monastery sister with silver-purple hair, white and black religious robes
+- **Animations Completed:** None
+- **Download URL:** https://api.pixellab.ai/mcp/characters/909b39d1-9b7d-4a8a-af3c-bdbbdc45787a/download
+- **Status:** ✅ Downloaded to `assets/sprites/npcs/nun_shopkeeper/`
 
 ---
 

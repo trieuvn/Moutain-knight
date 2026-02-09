@@ -1,0 +1,41 @@
+[gd_scene load_steps=3 format=3 uid="uid://npc_merchant_scene"]
+
+[ext_resource type="Script" path="res://scripts/npcs/base_npc.gd" id="1_script"]
+
+[sub_resource type="RectangleShape2D" id="interact_area"]
+size = Vector2(60, 80)
+
+[node name="Merchant" type="Area2D"]
+collision_layer = 6
+collision_mask = 1
+script = ExtResource("1_script")
+npc_name = "Sister Miriam"
+npc_type = "merchant"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("interact_area")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -32)
+scale = Vector2(2, 2)
+
+[node name="Label" type="Label" parent="."]
+offset_left = -50.0
+offset_top = -90.0
+offset_right = 50.0
+offset_bottom = -70.0
+theme_override_colors/font_color = Color(0.9, 0.8, 0.6, 1)
+theme_override_font_sizes/font_size = 14
+text = "MERCHANT"
+horizontal_alignment = 1
+
+[node name="InteractLabel" type="Label" parent="."]
+visible = false
+offset_left = -30.0
+offset_top = 20.0
+offset_right = 30.0
+offset_bottom = 40.0
+theme_override_colors/font_color = Color(1, 1, 0.7, 1)
+theme_override_font_sizes/font_size = 12
+text = "[E] Shop"
+horizontal_alignment = 1

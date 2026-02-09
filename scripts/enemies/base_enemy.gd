@@ -57,8 +57,8 @@ func _ready() -> void:
 
 func _load_sprites() -> void:
 	# Override in child classes for specific sprites
-	# Default: try to load skeleton sprites
-	if sprite and ResourceLoader.exists("res://assets/sprites/enemies/skeleton_enemy_sprites_1770124993026.png"):
+	# Default: load skeleton sprites using SpriteLoader
+	if sprite:
 		SpriteLoader.setup_skeleton_sprite_frames(sprite)
 
 
