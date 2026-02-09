@@ -105,5 +105,5 @@ func _enter_dungeon() -> void:
 	EventBus.left_village.emit()
 	GameManager.is_in_village = false
 	
-	# Load dungeon scene
-	EventBus.scene_change_requested.emit("res://scenes/rooms/test_room.tscn")
+	# Load dungeon combat room with enemies
+	EventBus.scene_change_requested.emit("res://scenes/rooms/combat_room_1.tscn")

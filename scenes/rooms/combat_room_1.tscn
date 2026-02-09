@@ -1,7 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://combat_room_1"]
+[gd_scene load_steps=8 format=3 uid="uid://combat_room_1"]
 
 [ext_resource type="PackedScene" uid="uid://skeleton_warrior_enemy" path="res://scenes/enemies/skeleton_warrior.tscn" id="1_enemy"]
 [ext_resource type="PackedScene" uid="uid://hud_main_scene" path="res://scenes/ui/hud.tscn" id="2_hud"]
+[ext_resource type="PackedScene" uid="uid://dxp3f5t8player" path="res://scenes/player/player.tscn" id="3_player"]
+[ext_resource type="PackedScene" uid="uid://pause_menu_ui" path="res://scenes/ui/pause_menu.tscn" id="4_pause"]
+[ext_resource type="PackedScene" uid="uid://death_screen_ui" path="res://scenes/ui/death_screen.tscn" id="5_death"]
 
 [sub_resource type="RectangleShape2D" id="ground_shape"]
 size = Vector2(1200, 64)
@@ -64,7 +67,7 @@ offset_bottom = 200.0
 color = Color(0.1, 0.08, 0.09, 1)
 
 [node name="Platform1" type="StaticBody2D" parent="."]
-position = Vector2(-200, 100)
+position = Vector2(-200, 180)
 collision_layer = 5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platform1"]
@@ -78,7 +81,7 @@ offset_bottom = 12.0
 color = Color(0.15, 0.1, 0.12, 1)
 
 [node name="Platform2" type="StaticBody2D" parent="."]
-position = Vector2(200, 50)
+position = Vector2(250, 130)
 collision_layer = 5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platform2"]
@@ -94,6 +97,9 @@ color = Color(0.15, 0.1, 0.12, 1)
 [node name="PlayerSpawnPoint" type="Marker2D" parent="."]
 position = Vector2(-400, 200)
 
+[node name="Player" parent="." instance=ExtResource("3_player")]
+position = Vector2(-400, 200)
+
 [node name="Enemies" type="Node2D" parent="."]
 
 [node name="SkeletonWarrior1" parent="Enemies" instance=ExtResource("1_enemy")]
@@ -106,3 +112,7 @@ position = Vector2(300, 200)
 
 [node name="AmbientLight" type="CanvasModulate" parent="."]
 color = Color(0.75, 0.65, 0.85, 1)
+
+[node name="PauseMenu" parent="." instance=ExtResource("4_pause")]
+
+[node name="DeathScreen" parent="." instance=ExtResource("5_death")]
