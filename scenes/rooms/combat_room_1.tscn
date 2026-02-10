@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://dxp3f5t8player" path="res://scenes/player/player.tscn" id="3_player"]
 [ext_resource type="PackedScene" uid="uid://pause_menu_ui" path="res://scenes/ui/pause_menu.tscn" id="4_pause"]
 [ext_resource type="PackedScene" uid="uid://death_screen_ui" path="res://scenes/ui/death_screen.tscn" id="5_death"]
+[ext_resource type="Script" path="res://scripts/rooms/room_controller.gd" id="6_room"]
 
 [sub_resource type="RectangleShape2D" id="ground_shape"]
 size = Vector2(1200, 64)
@@ -16,6 +17,8 @@ size = Vector2(64, 400)
 size = Vector2(200, 24)
 
 [node name="CombatRoom1" type="Node2D"]
+script = ExtResource("6_room")
+room_type = "combat"
 
 [node name="Background" type="ColorRect" parent="."]
 offset_left = -600.0

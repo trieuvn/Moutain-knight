@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://hit_impact_effect"]
+
+[ext_resource type="Script" path="res://scripts/effects/hit_impact.gd" id="1_script"]
+
+[node name="HitImpact" type="CPUParticles2D"]
+z_index = 50
+script = ExtResource("1_script")

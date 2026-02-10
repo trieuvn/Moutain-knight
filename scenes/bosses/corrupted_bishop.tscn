@@ -1,0 +1,137 @@
+[gd_scene load_steps=11 format=3 uid="uid://corrupted_bishop_boss"]
+
+[ext_resource type="Script" path="res://scripts/bosses/corrupted_bishop.gd" id="1_boss"]
+[ext_resource type="Script" path="res://scripts/components/state_machine.gd" id="2_sm"]
+[ext_resource type="Script" path="res://scripts/components/health_component.gd" id="3_health"]
+[ext_resource type="Script" path="res://scripts/components/hurtbox.gd" id="4_hurtbox"]
+[ext_resource type="Script" path="res://scripts/components/hitbox.gd" id="5_hitbox"]
+[ext_resource type="Script" path="res://scripts/enemies/states/idle_state.gd" id="6_idle"]
+[ext_resource type="Script" path="res://scripts/enemies/states/patrol_state.gd" id="7_patrol"]
+[ext_resource type="Script" path="res://scripts/enemies/states/chase_state.gd" id="8_chase"]
+[ext_resource type="Script" path="res://scripts/enemies/states/attack_state.gd" id="9_attack"]
+[ext_resource type="Script" path="res://scripts/enemies/states/hurt_state.gd" id="10_hurt"]
+[ext_resource type="Script" path="res://scripts/enemies/states/death_state.gd" id="11_death"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(30, 60)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hurtbox"]
+size = Vector2(28, 56)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hitbox"]
+size = Vector2(50, 35)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_detection"]
+radius = 500.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_skeleton"]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"idle",
+"speed": 6.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"walk",
+"speed": 8.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"run",
+"speed": 10.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"attack",
+"speed": 12.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"hurt",
+"speed": 10.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"death",
+"speed": 8.0
+}]
+
+[node name="CorruptedBishop" type="CharacterBody2D" groups=["enemies", "bosses"]]
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("1_boss")
+max_hp = 300.0
+attack_damage = 25.0
+move_speed = 60.0
+detection_range = 500.0
+attack_range = 60.0
+blood_coin_reward = 100
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -22)
+shape = SubResource("RectangleShape2D_body")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -24)
+sprite_frames = SubResource("SpriteFrames_skeleton")
+animation = &"idle"
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("2_sm")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateMachine"]
+script = ExtResource("6_idle")
+
+[node name="Patrol" type="Node" parent="StateMachine"]
+script = ExtResource("7_patrol")
+
+[node name="Chase" type="Node" parent="StateMachine"]
+script = ExtResource("8_chase")
+
+[node name="Attack" type="Node" parent="StateMachine"]
+script = ExtResource("9_attack")
+
+[node name="Hurt" type="Node" parent="StateMachine"]
+script = ExtResource("10_hurt")
+
+[node name="Death" type="Node" parent="StateMachine"]
+script = ExtResource("11_death")
+
+[node name="HealthComponent" type="Node" parent="."]
+script = ExtResource("3_health")
+max_health = 50.0
+current_health = 50.0
+
+[node name="Hurtbox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 8
+script = ExtResource("4_hurtbox")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, -22)
+shape = SubResource("RectangleShape2D_hurtbox")
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 4
+monitoring = false
+monitorable = false
+script = ExtResource("5_hitbox")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(25, -22)
+shape = SubResource("RectangleShape2D_hitbox")
+
+[node name="DetectionArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+shape = SubResource("CircleShape2D_detection")
+debug_color = Color(0.3, 0.8, 0.3, 0.15)
+
+[node name="AttackTimer" type="Timer" parent="."]
+wait_time = 1.5
+one_shot = true

@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://village_main_scene"]
+[gd_scene load_steps=7 format=3 uid="uid://village_main_scene"]
 
 [ext_resource type="Script" path="res://scripts/village/village.gd" id="1_village"]
 [ext_resource type="PackedScene" uid="uid://dxp3f5t8player" path="res://scenes/player/player.tscn" id="2_player"]
 [ext_resource type="PackedScene" uid="uid://hud_main_scene" path="res://scenes/ui/hud.tscn" id="3_hud"]
 [ext_resource type="PackedScene" uid="uid://npc_merchant_scene" path="res://scenes/npcs/merchant.tscn" id="4_merchant"]
 [ext_resource type="PackedScene" uid="uid://pause_menu_ui" path="res://scenes/ui/pause_menu.tscn" id="5_pause"]
+[ext_resource type="PackedScene" uid="uid://shop_ui" path="res://scenes/ui/shop_ui.tscn" id="6_shop"]
 
 [sub_resource type="RectangleShape2D" id="ground_shape"]
 size = Vector2(2000, 64)
@@ -192,3 +193,5 @@ theme_override_font_sizes/font_size = 14
 text = "Village - Safe Zone"
 
 [node name="PauseMenu" parent="." instance=ExtResource("5_pause")]
+
+[node name="ShopUI" parent="." instance=ExtResource("6_shop")]
